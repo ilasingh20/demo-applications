@@ -33,10 +33,7 @@ pipeline
     }
     stage('code package')
         {
-           when
-           {
-              branch 'dev'
-           }
+
               steps
               {
                  echo 'Creating WAR Artifact'
