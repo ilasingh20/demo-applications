@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCOUNT_ID = "533267238276"
+        AWS_ACCOUNT_ID = "654654450756"
         REGION = "ap-south-1"
         ECR_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
         IMAGE_NAME = "ilasingh20/demo-applications:demo-applications-v.1.${env.BUILD_NUMBER}"
