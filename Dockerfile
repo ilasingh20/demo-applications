@@ -1,25 +1,23 @@
-                          FROM tomcat:9.0.52-jre11-openjdk-slim
+                          # Use a base image that supports Java 17
+                          FROM tomcat:10.1.8-jdk17-temurin
 
-                          # Install Java 17
-                          RUN apt-get update && \
-                              apt-get install -y openjdk-17-jdk && \
-                              apt-get clean;
+                          # Remove unnecessary default webapps
+                          RUN rm -rf /usr/local/tomcat/webapps/*
 
-                          # Set Java 17 as the default Java version
-                          RUN update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java && \
-                              update-alternatives --set javac /usr/lib/jvm/java-17-openjdk-amd64/bin/javac
-
-                          # Copy the JAR file into the Tomcat webapps directory
-                          COPY ./target/demo-application*.jar /usr/local/tomcat/webapps
+                          # Copy the WAR file into the Tomcat webapps directory
+                          COPY ./target/demo-application.war /usr/local/tomcat/webapps/ROOT.war
 
                           # Expose port 8080
                           EXPOSE 8080
+
+                          # Create a non-root user
+                          RUN groupadd -r appgroup && useradd -r -g appgroup demo-application
 
                           # Set the user
                           USER demo-application
 
                           # Set the working directory
-                          WORKDIR /usr/local/tomcat/webapps
+                          WORKDIR /usr/local/tomcat
 
                           # Start Tomcat
                           CMD ["catalina.sh", "run"]
